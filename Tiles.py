@@ -20,7 +20,6 @@ class Tiles:
 
     @staticmethod
     def custom_deepcopy(tile_list):
-        """Custom deep copy that includes storing original images."""
         copied_list = []
         for tile in tile_list:
 
@@ -46,12 +45,9 @@ class Tiles:
             self.tile_list.remove(tile)
 
     def reset_tiles(self):
-        """Method to reset the tile list using the original."""
-
 
         # Perform deep copy to restore tile list
         self.tile_list = self.custom_deepcopy(self.original_tile_list)
-
         # Restore the original images
         # for tile in self.tile_list:
         #     tile['img'] = tile['original_img']  # Reset the image to its original state

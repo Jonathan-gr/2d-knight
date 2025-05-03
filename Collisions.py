@@ -1,23 +1,18 @@
 # collision.py
 import all_sprites
-from Constants import fire_wall
 from Tiles import Tiles
 import pygame
-import Constants
 import explosion
 from explosion import Explosion
 from fire_wall import Firewall
+import math
 
 
 def get_tile_list():
     return Tiles().get_tile_list()
-#monster collision
+
 def check_collision_with_tiles_y(rect):
 
-    """
-    Check if the given rect collides with any tiles in the tile list.
-    Returns True if a collision is detected, False otherwise.
-    """
     up_rect = rect.move(0, 1)
     down_rect = rect.move(0, -1)
 
@@ -29,10 +24,6 @@ def check_collision_with_tiles_y(rect):
 
 def check_collision_with_tiles_x(rect):
 
-    """
-    Check if the given rect collides with any tiles in the tile list.
-    Returns True if a collision is detected, False otherwise.
-    """
     right_rect = rect.move(1, 0)  # Move 1 pixel to the right
     left_rect = rect.move(-1, 0)  # Move 1 pixel to the left
 
@@ -43,10 +34,7 @@ def check_collision_with_tiles_x(rect):
 
 #check monster horizontal
 def check_horizontal_collision(rect, direction):
-    """
-    Check for horizontal collisions to the left or right of the rect based on the direction.
-    Returns True if a collision is detected, False otherwise.
-    """
+
     if direction > 0:  # Moving right
         check_pos = rect.right + 1
     else:  # Moving left
@@ -60,10 +48,7 @@ def check_horizontal_collision(rect, direction):
 
 #monster dead tile check
 def check_tile_below_after_monster_dead(rect):
-    """
-    Check if there is a tile directly below the given rect.
-    Returns the tile rect if a tile exists below, otherwise None.
-    """
+
     rect_below = rect.copy()
     rect_below.y += 1  # Move the rect down by 1 pixel to check below
 
@@ -76,10 +61,7 @@ def check_tile_below_after_monster_dead(rect):
 
 #monster collision
 def check_tile_below(rect, direction,dead):
-    """
-    Check if there is a tile below the given rect in the direction it's moving.
-    Returns True if the rect is at the edge of a tile, False otherwise.
-    """
+
     force = 0
     if dead:
         force = 5
@@ -100,10 +82,6 @@ def check_tile_below(rect, direction,dead):
 
 #player collision X
 def handle_player_horizontal_collision(rect, dx):
-    """
-    Handles horizontal collisions by adjusting the player's position.
-    Returns the adjusted dx (horizontal velocity).
-    """
 
     rect.x += dx
     check_distance = 1
@@ -133,10 +111,7 @@ def handle_player_horizontal_collision(rect, dx):
 
 
 def check_collision(rect, dx, dy):
-    """
-    Simulates moving the player by dx, dy and checks for collisions.
-    Returns True if collision is detected, False otherwise.
-    """
+
     future_rect = rect.copy()  # Copy the current rect
     future_rect.x += dx  # Apply horizontal knockback
     future_rect.y += dy  # Apply vertical knockback
@@ -164,10 +139,6 @@ def check_monster_dead_falling_on_tile(monster):
 
 #player y collision
 def handle_player_vertical_collision(rect, dy):
-    """
-    Handles vertical collisions by adjusting the player's position.
-    Returns the adjusted dy (vertical velocity) and whether the player is grounded.
-    """
 
     rect.y += dy
     grounded = False
@@ -187,10 +158,7 @@ def handle_player_vertical_collision(rect, dy):
 
                 Tiles().change_tile_image(tile)
 
-
-
         rect.y -= 1  # Move rect back to original position
-
 
     else:
         for tile in get_tile_list():
@@ -205,11 +173,7 @@ def handle_player_vertical_collision(rect, dy):
                     dy = 0
                     break
 
-
-
     return dy, grounded
-
-
 
 def check_dead_player_collision_with_tiles(rect):
 
@@ -283,7 +247,6 @@ def check_player_monster_collision(player, monster_group):
 
 def check_player_hit_statue_collision(player):
 
-
     #make sure the player is attacking in the right direction
     for statue in all_sprites.get_sprite_group('stone_statue_group'):
 
@@ -309,7 +272,6 @@ def check_fireball_player_collision(player, fireball_group,explosion_group):
         reduced_player_rect = player.rect.inflate(-shrink_amount_x, -shrink_amount_y)
 
         if reduced_player_rect.colliderect(fireball.rect):
-
 
             # Determine the side of impact
             fireball_center = fireball.rect.center
@@ -349,26 +311,14 @@ def check_fireball_player_collision(player, fireball_group,explosion_group):
                     else:
                         impact_side = 'top'
 
-
             player.knockback(impact_side,4)
-
             if not (player.defend and ((player.direction == 1 and player_center[0]+10 < fireball_center[0]) or
                                   (player.direction == -1 and player_center[0]-10 > fireball_center[0]))):
                 player.damage_taken()
 
-            # # Assuming you have a method to handle player damage
-            # # Create explosion object at the calculated position
             boom = explosion.Explosion(fireball.rect.centerx, fireball.rect.centery)  # Pass direction for custom effects
             explosion_group.add(boom)
-            # # Optionally, remove the fireball and apply damage
             fireball.kill()
-
-
-
-
-
-import math
-
 
 def check_tile_fireball_collision(fireball_group):
     for tile in get_tile_list():
@@ -390,7 +340,6 @@ def check_tile_fireball_collision(fireball_group):
 
                 # Convert radians to degrees for easier interpretation
                 angle_degrees = math.degrees(angle_radians)
-
 
                 # Threshold to determine if movement is more horizontal or vertical
                 threshold = 0.1  # You can adjust this value
@@ -475,8 +424,6 @@ def check_player_hit_flying_demon(player):
             elif not player.is_attacking and (demon.is_swooping or demon.is_circling):
                 player.damage_taken()
 
-
-
 def check_player_hit_fireboss(player):
 
     for fire_boss in all_sprites.get_sprite_group('demon_boss_group'):
@@ -532,7 +479,6 @@ def check_player_spike_collision(player, spike_group):
 #player icicle collision
 def check_player_icicle_collision(player, icicle_group):
 
-
     for ice in icicle_group:
         if player.rect.colliderect(ice.rect):
             if ice.falling:
@@ -559,8 +505,6 @@ def check_player_heart_collision(player, heart_group):
     for heart in collided_hearts:
         return (heart.tile_x,heart.tile_y)
 
-
-
 def check_player_rare_blue_gem_collision(player, rare_blue_gem):
 
     collided_gems = pygame.sprite.spritecollide(player, rare_blue_gem, True)
@@ -571,7 +515,6 @@ def check_player_rare_blue_gem_collision(player, rare_blue_gem):
 
 def check_tile_torch_collision(torch_group):
     for torch in torch_group:
-
 
         for tile in get_tile_list():
             if tile['img_rect'].colliderect(torch.rect):

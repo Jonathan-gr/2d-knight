@@ -70,7 +70,6 @@ class Torch(pygame.sprite.Sprite):
         self.is_active = False  # Deactivate torch after landing
 
     def handle_collision(self):
-        print('y')
         # Snap torch to the tile's top and stop its downward motion
         self.rect.y = self.rect.y - self.velocity_y -2 # Adjust position to prevent sinking into tile
         self.velocity_y = 0  # Stop vertical movement after landing

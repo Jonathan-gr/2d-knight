@@ -101,7 +101,7 @@ class DemonBoss(Monster):
 
 
     def switch_to_fire_mode(self):
-        """Switch to fire mode."""
+
         self.is_flaming = True
         self.is_screaming = False
         self.is_wind_attack = False
@@ -112,13 +112,13 @@ class DemonBoss(Monster):
 
 
     def switch_to_flaming_demon(self):
-        """Switch to flaming demon mode after fire mode finishes."""
+
         self.current_mode = 'flaming_demon'
         self.image_index = 0
         self.last_mode_switch = pygame.time.get_ticks()
 
     def switch_to_wind_attack(self):
-        """Switch to wind."""
+
         self.is_flaming = False
         self.is_screaming = False
         self.is_wind_attack = True
@@ -127,7 +127,7 @@ class DemonBoss(Monster):
         self.last_mode_switch = pygame.time.get_ticks()
 
     def switch_to_default_mode(self):
-        """Switch to default mode."""
+
         self.current_mode = 'idle'
         self.image_index = 0
         self.last_mode_switch = pygame.time.get_ticks()
@@ -135,7 +135,7 @@ class DemonBoss(Monster):
 
 
     def switch_to_scream_mode(self):
-        """Switch to scream mode."""
+
         self.is_flaming = False
         self.is_screaming = True
         self.is_wind_attack = False
@@ -145,7 +145,6 @@ class DemonBoss(Monster):
         self.blast_count = 0
 
     def switch_to_default_after_scream(self):
-        """Switch to default mode after scream mode finishes."""
         self.switch_to_default_mode()
 
     def update(self, player_pos,player):
