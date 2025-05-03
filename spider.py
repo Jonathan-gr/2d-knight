@@ -25,7 +25,7 @@ class Spider(Monster):
         ]
 
         self.image_index_eating = 0  # To keep track of the current image
-        self.animation_speed_eating = 200  # Switch image every 100ms
+        self.animation_speed_eating = 200  # Switch image every x ms
         self.last_animation_time_eating = 0
 
         self.image_left1 = pygame.transform.flip(self.image1, True, False)

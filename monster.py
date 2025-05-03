@@ -1,7 +1,6 @@
 import pygame
 from abc import ABC, abstractmethod
 import Collisions
-import Constants
 import math
 import all_sprites
 
